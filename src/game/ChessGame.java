@@ -25,7 +25,7 @@ public class ChessGame {
 
     public boolean move(int x_1, int y_1, int x_2, int y_2){
 
-        System.out.println(board.getBody()[x_1][y_1].reChecking(1, 1, 2, 2, board));
+       // System.out.println(board.getBody()[x_1][y_1].reChecking(x_1, y_1, x_2, y_2, board));
         if(check(x_1, y_1, x_2, y_2)) {
             board.setElement(x_2, y_2, board.getElement(x_1, y_1));
             initNullCell(x_1, y_1);

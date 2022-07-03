@@ -49,9 +49,7 @@ public class Board {
         RookFigure rookBlack_2 = new RookFigure(7, 7, true, "RB");
         body[7][7] = rookBlack_2;
 
-
         //ОШИЦЕРЫ
-
         BishopFigure bishopWhite_1 = new BishopFigure(0, 2, false, "BW");
         body[0][2] = bishopWhite_1;
         BishopFigure bishopWhite_2 = new BishopFigure(0, 5, false, "BW");
