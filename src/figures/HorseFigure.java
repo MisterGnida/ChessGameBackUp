@@ -14,6 +14,10 @@ public class HorseFigure implements Figureable{
         horse.setName(name);
     }
 
+    public Boolean getColor(){
+        return horse.getColor();
+    }
+
     public String getName(){
         return horse.getName();
     }

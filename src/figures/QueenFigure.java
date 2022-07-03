@@ -13,6 +13,10 @@ public class QueenFigure implements Figureable{
 
     }
 
+    public Boolean getColor(){
+        return queen.getColor();
+    }
+
     public String getName(){
         return queen.getName();
     }

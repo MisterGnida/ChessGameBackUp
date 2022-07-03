@@ -14,6 +14,10 @@ public class RookFigure implements Figureable{
         rook.setName(name);
     }
 
+    public Boolean getColor(){
+        return rook.getColor();
+    }
+
     public String getName(){
         return rook.getName();
     }

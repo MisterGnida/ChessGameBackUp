@@ -9,6 +9,10 @@ public class WhiteCell implements Figureable{
         return name;
     }
 
+    public Boolean getColor(){
+        return false;
+    }
+
     @Override
     public String toString() {
         return name;

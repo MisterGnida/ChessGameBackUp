@@ -13,6 +13,10 @@ public class KingFigure implements Figureable{
         king.setName(name);
     }
 
+    public Boolean getColor(){
+        return king.getColor();
+    }
+
     public String getName(){
         return king.getName();
     }

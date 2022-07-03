@@ -19,6 +19,10 @@ public class BishopFigure implements Figureable{
         return bishop.getName();
     }
 
+    public Boolean getColor(){
+        return bishop.getColor();
+    }
+
     @Override
     public String toString() {
         return bishop.getName();

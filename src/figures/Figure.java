@@ -13,7 +13,7 @@ public class Figure {
         name = "-";
     }
 
-    public boolean isColor() {
+    public boolean getColor() {
         return color;
     }
 
@@ -44,6 +44,7 @@ public class Figure {
     public String getName() {
         return name;
     }
+
 
     @Override
     public String toString() {

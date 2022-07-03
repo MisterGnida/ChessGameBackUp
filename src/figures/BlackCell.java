@@ -9,7 +9,9 @@ public class BlackCell implements Figureable{
         return null;
     }
 
-
+    public Boolean getColor(){
+        return true;
+    }
 
     public String getName(){
         return name;
