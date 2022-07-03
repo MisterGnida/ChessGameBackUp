@@ -3,8 +3,11 @@ package figures;
 import game.Board;
 
 //пешка
+//все ходы реализованы проверено by vladilshk
+// нужно добавить превращение в другие фигуры и разобраться с пролетом
 public class PawnFigure implements Figureable{
     private Figure pawn;
+    private int hasMoved;
 
     public PawnFigure(int x, int y, boolean color, String name){
         pawn = new Figure();
@@ -12,6 +15,7 @@ public class PawnFigure implements Figureable{
         pawn.setX(x);
         pawn.setY(y);
         pawn.setName(name);
+        hasMoved = 0;
 
     }
 
@@ -30,41 +34,54 @@ public class PawnFigure implements Figureable{
 
     @Override
     public Boolean reChecking(int x_1, int y_1, int x_2, int y_2, Board board) {
-        if(x_2 - x_1 == 2 && y_1 == y_2 ){
-            if(board.getElement(x_2 - 1 , y_2).equals("11") || board.getElement(x_2 - 1, y_2).getName().equals("00")){
-                if((board.getElement(x_2, y_2).equals("11") || board.getElement(x_2, y_2).equals("00"))){
+        //white double step
+        if(x_2 - x_1 == 2 && !(this.getColor()) && y_1 == y_2 && hasMoved == 0){
+            if(board.getElement(x_2 - 1 , y_2).getName().equals("11") || board.getElement(x_2 - 1, y_2).getName().equals("00")){
+                if((board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00"))){
+                    hasMoved = 1;
+                    return true;
+                }
+            }
+        }
+        //black double step
+        if(x_1 - x_2 == 2 && (this.getColor()) && y_1 == y_2 && hasMoved == 0){
+            if(board.getElement(x_2 + 1 , y_2).getName().equals("11") || board.getElement(x_2 + 1, y_2).getName().equals("00")){
+                if((board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00"))){
+                    hasMoved = 1;
                     return true;
                 }
             }
         }
 
-        if(x_2 - x_1 == 1 && y_1 == y_2 && (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00"))){
+        //white oneStep
+        if(x_2 - x_1 == 1 && !(this.getColor()) && y_1 == y_2 && (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00"))){
+            hasMoved = 1;
             return true;
         }
 
-        if(x_2 - x_1 == 1 && ((y_2 - y_1 == 1) || (y_1 - y_2 == 1))){
-            if(! (board.getElement(x_2, y_2).getName().equals("11")) || !(board.getElement(x_2, y_2).getName().equals("00"))){
+        //black oneStep
+        if(x_1 - x_2 == 1 && (this.getColor()) && y_1 == y_2 && (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00"))){
+            hasMoved = 1;
+            return true;
+        }
+
+        //white eat
+        if(x_2 - x_1 == 1 && !(this.getColor()) && ((y_2 - y_1 == 1) || (y_1 - y_2 == 1))){
+            if(!(board.getElement(x_2, y_2).getName().equals("11")) && !(board.getElement(x_2, y_2).getName().equals("00"))){
+                hasMoved = 1;
                 return true;
             }
         }
 
-       /* move(1, 0, 2, 0);
-        System.out.println("true");
-        move(1, 1, 3, 1);
-        System.out.println("true");
-        move(1, 2, 4, 2);
-        System.out.println("false");
-        move(1, 3, 1, 4);
-        System.out.println("false");
-        move(1, 4, 2, 5);
-        System.out.println("false");
+        //black eat
+        if(x_1 - x_2 == 1 && this.getColor() && ((y_2 - y_1 == 1) || (y_1 - y_2 == 1))){
+            if(! (board.getElement(x_2, y_2).getName().equals("11")) && !(board.getElement(x_2, y_2).getName().equals("00"))){
+                hasMoved = 1;
+                return true;
+            }
+        }
 
-        move(6, 2, 4, 2);
-        System.out.println("true");
-        move(3, 1, 4, 2);
-        System.out.println("true");
 
-        */
 
 
         return false;
