@@ -16,6 +16,13 @@ public class HorseFigure implements Figureable{
         horse.setName(name);
     }
 
+    public boolean getHasMoved(){return false;}
+
+    @Override
+    public void setHasMoved() {
+
+    }
+
     public Boolean getColor(){
         return horse.getColor();
     }

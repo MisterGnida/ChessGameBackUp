@@ -14,6 +14,12 @@ public class QueenFigure implements Figureable{
 
     }
 
+    public boolean getHasMoved(){return false;}
+
+    @Override
+    public void setHasMoved() {
+    }
+
     public Boolean getColor(){
         return queen.getColor();
     }

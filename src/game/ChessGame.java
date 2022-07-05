@@ -27,8 +27,20 @@ public class ChessGame {
     }
 
     public boolean move(int x_1, int y_1, int x_2, int y_2){
+        //проверка рокировки
 
-       // System.out.println(board.getBody()[x_1][y_1].reChecking(x_1, y_1, x_2, y_2, board));
+        if(castlingCheck(x_1, y_1, x_2, y_2)) {
+            board.getElement(x_1, y_1).setHasMoved();
+            board.getElement(x_2, y_2).setHasMoved();
+            String str = board.getElement(x_2, y_2).getName();
+            Figureable Rook = board.getElement(x_2, y_2);
+            board.setElement(x_2, y_2, board.getElement(x_1, y_1));
+            board.setElement(x_1, y_1, Rook);
+            board.printBoard();
+            return true;
+        }
+
+        //обычный ход
         if(check(x_1, y_1, x_2, y_2)) {
             if(board.getElement(x_1, y_1).reChecking(x_1, y_1, x_2, y_2, board)) {
                 board.setElement(x_2, y_2, board.getElement(x_1, y_1));
@@ -43,6 +55,7 @@ public class ChessGame {
         //Figureable fig = new PawnFigure();
     }
 
+
     public void initNullCell(int x_1, int y_1){
         WhiteCell whiteCell = new WhiteCell();
         BlackCell blackCell = new BlackCell();
@@ -53,6 +66,7 @@ public class ChessGame {
             board.setElement(x_1, y_1, whiteCell);
         }
     }
+
 
     public boolean check(int x_1, int y_1, int x_2, int y_2){
         if(x_2 > 7 || y_2 > 7){
@@ -66,6 +80,44 @@ public class ChessGame {
         }
         return true;
     }
+    //рокировка
+    //вроде работает, но нужно тестрировать
+    public boolean castlingCheck(int x_1, int y_1, int x_2, int y_2){
+        if((board.getElement(x_1, y_1).getName().charAt(0) == 'K' && board.getElement(x_2, y_2).getName().charAt(0) == 'R') || (board.getElement(x_1, y_1).getName().charAt(0) == 'R' && board.getElement(x_2, y_2).getName().charAt(0) == 'K') ) {
+            if (board.getElement(x_1, y_1).getColor() == board.getElement(x_2, y_2).getColor()) {
+                if (!board.getElement(x_1, y_1).getHasMoved() && !board.getElement(x_2, y_2).getHasMoved()) {
+                    if (y_1 < y_2) {
+                        for (int y = y_1 + 1; y < y_2; y++) {
+                            if (!board.getElement(x_1, y).getName().equals("11") && !board.getElement(x_1, y).getName().equals("00")) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    if (y_1 > y_2) {
+                        for (int y = y_2 + 1; y < y_1; y++) {
+                            if (!board.getElement(x_1, y).getName().equals("11") && !board.getElement(x_1, y).getName().equals("00")) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+
+                }
+            }
+        }
+        return false;
+    }
+    //взятие на прозоде
+    public void takingOnThePassCheck(){
+
+    }
+
+    // замена пешки
+    public void pawnUpdate(){
+
+    }
+
     public Board getBoard() {
         return board;
     }

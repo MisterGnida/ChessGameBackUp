@@ -10,4 +10,9 @@ public interface Figureable {
     String getName();
 
     Boolean getColor();
+
+    boolean getHasMoved();
+
+    void setHasMoved();
+
 }

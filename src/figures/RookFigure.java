@@ -7,6 +7,7 @@ import game.Board;
 // rechecking в доработке не нуждается
 public class RookFigure implements Figureable{
     private Figure rook;
+    private boolean hasMoved;
 
     public RookFigure(int x, int y, boolean color, String name){
         rook = new Figure();
@@ -14,6 +15,14 @@ public class RookFigure implements Figureable{
         rook.setX(x);
         rook.setY(y);
         rook.setName(name);
+        hasMoved = false;
+    }
+
+    public boolean getHasMoved(){return hasMoved;}
+
+    @Override
+    public void setHasMoved() {
+        hasMoved = true;
     }
 
     public Boolean getColor(){
@@ -38,6 +47,7 @@ public class RookFigure implements Figureable{
                     return false;
                 }
             }
+            hasMoved = true;
             return true;
         }
 
@@ -48,6 +58,7 @@ public class RookFigure implements Figureable{
                     return false;
                 }
             }
+            hasMoved = true;
             return true;
         }
         //право
@@ -57,6 +68,7 @@ public class RookFigure implements Figureable{
                     return false;
                 }
             }
+            hasMoved = true;
             return true;
         }
         //лево
@@ -66,6 +78,7 @@ public class RookFigure implements Figureable{
                     return false;
                 }
             }
+            hasMoved = true;
             return true;
         }
 

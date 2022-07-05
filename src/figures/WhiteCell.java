@@ -13,6 +13,13 @@ public class WhiteCell implements Figureable{
         return false;
     }
 
+    public boolean getHasMoved(){return false;}
+
+    @Override
+    public void setHasMoved() {
+
+    }
+
     @Override
     public String toString() {
         return name;

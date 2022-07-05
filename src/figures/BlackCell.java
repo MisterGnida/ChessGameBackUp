@@ -20,4 +20,11 @@ public class BlackCell implements Figureable{
     public String toString(){
         return name;
     }
+
+    public boolean getHasMoved(){return false;}
+
+    @Override
+    public void setHasMoved() {
+
+    }
 }
