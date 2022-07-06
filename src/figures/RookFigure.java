@@ -3,7 +3,7 @@ package figures;
 import game.Board;
 
 //ладья
-//все ходы реализованы проверено by vladilshk
+//все ходы реализованы проверены by vladilshk
 // rechecking в доработке не нуждается
 public class RookFigure implements Figureable{
     private Figure rook;
@@ -61,6 +61,7 @@ public class RookFigure implements Figureable{
             hasMoved = true;
             return true;
         }
+
         //право
         if(x_1 == x_2 && y_1 < y_2){
             for (int i = y_1 + 1; i < y_2; i++) {
@@ -71,6 +72,7 @@ public class RookFigure implements Figureable{
             hasMoved = true;
             return true;
         }
+
         //лево
         if(x_1 == x_2 && y_1 > y_2){
             for (int i = y_1 - 1; i > y_2; i--) {
