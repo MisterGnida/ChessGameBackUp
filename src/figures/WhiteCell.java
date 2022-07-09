@@ -2,18 +2,20 @@ package figures;
 
 import game.Board;
 
-public class WhiteCell implements Figureable{
-    String name = "00";
+public class WhiteCell implements Figureable {
+    private final String name = "00";
 
     public String getName() {
         return name;
     }
 
-    public Boolean getColor(){
+    public Boolean getColor() {
         return false;
     }
 
-    public boolean getHasMoved(){return false;}
+    public boolean getHasMoved() {
+        return false;
+    }
 
     @Override
     public void setHasMoved() {

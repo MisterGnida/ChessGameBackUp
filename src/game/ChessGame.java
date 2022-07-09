@@ -10,50 +10,70 @@ public class ChessGame {
     private final Board board;
     private boolean player;
 
-    public ChessGame(){
+    private boolean checkWhite;
+    private boolean checkBlack;
+
+    private int whiteKingX;
+    private int whiteKingY;
+
+    private int blackKingX;
+    private int blackKingY;
+
+    public ChessGame() {
         this.board = new Board();
+        this.player = false;
+        whiteKingX = 0;
+        whiteKingY = 4;
+
+        blackKingX = 7;
+        blackKingY = 4;
+
+        checkBlack = false;
+        checkWhite = false;
         startGame();
-        player = false;
     }
 
-    public void startGame(){
+    public void startGame() {
         while (true) {
-/*            if(!player){
+            if (!player) {
                 System.out.println("White step");
             }
-            if(player){
+            if (player) {
                 System.out.println("Black step");
-            }*/
+            }
             System.out.println("Enter the coordinates: ");
             Scanner sc = new Scanner(System.in);
             int x_1 = sc.nextInt();
             int y_1 = sc.nextInt();
             int x_2 = sc.nextInt();
             int y_2 = sc.nextInt();
-            if (!move(x_1, y_1, x_2, y_2)){
-                System.out.println("You can't do this step");
+            if ((!player && !board.getElement(x_1, y_1).getColor()) || (player && board.getElement(x_1, y_1).getColor())) {
+                if (!move(x_1, y_1, x_2, y_2)) {
+                    System.out.println("You can't do this step");
+                } else {
+                    player = !player;
+                }
+            } else if (player && !board.getElement(x_1, y_1).getColor()) {
+                System.out.println("It's black turn now");
+            } else if (!player && board.getElement(x_1, y_1).getColor()) {
+                System.out.println("It's white turn now");
             }
-            /*else {
-                if(!player){
-                    player = true;
-                }
-                if(player){
-                    player = false;
-                }
-            }*/
         }
     }
 
-    public boolean move(int x_1, int y_1, int x_2, int y_2){
+    public boolean move(int x_1, int y_1, int x_2, int y_2) {
         //рокировка
-        if(castlingCheck(x_1, y_1, x_2, y_2)) {
+        if (castlingCheck(x_1, y_1, x_2, y_2)) {
             board.getElement(x_1, y_1).setHasMoved();
             board.getElement(x_2, y_2).setHasMoved();
-            String str = board.getElement(x_2, y_2).getName();
             Figureable Rook = board.getElement(x_2, y_2);
             board.setElement(x_2, y_2, board.getElement(x_1, y_1));
             board.setElement(x_1, y_1, Rook);
             board.printBoard();
+            checkKing(true, this.board);
+            checkKing(false, this.board);
+
+
             return true;
         }
         //обычный ход
@@ -61,8 +81,10 @@ public class ChessGame {
             board.printBoard();
             return true;
         }
-        if(check(x_1, y_1, x_2, y_2)) {
-            if(board.getElement(x_1, y_1).reChecking(x_1, y_1, x_2, y_2, board)) {
+
+        // обычный ход
+        if (check(x_1, y_1, x_2, y_2)) {
+            if (board.getElement(x_1, y_1).reChecking(x_1, y_1, x_2, y_2, board)) {
                 board.setElement(x_2, y_2, board.getElement(x_1, y_1));
                 initNullCell(x_1, y_1);
                 board.printBoard();
@@ -82,40 +104,38 @@ public class ChessGame {
         WhiteCell whiteCell = new WhiteCell();
         BlackCell blackCell = new BlackCell();
 
-        if ((x_1 + y_1) % 2 == 1){
+        if ((x_1 + y_1) % 2 == 1) {
             board.setElement(x_1, y_1, blackCell);
         } else {
             board.setElement(x_1, y_1, whiteCell);
         }
     }
 
-    public boolean check(int x_1, int y_1, int x_2, int y_2){
+    public boolean check(int x_1, int y_1, int x_2, int y_2) {
         //your figure or not
         /*if(player != board.getElement(x_1, y_1).getColor()){
             return false;
         }*/
         //move off the board
-        if(x_2 > 7 || y_2 > 7 || x_1 > 7 || y_1 > 7){
+        if (x_2 > 7 || y_2 > 7 || x_1 > 7 || y_1 > 7) {
             return false;
         }
         //move an empty cell
-        if(board.getElement(x_1, y_1).getName().equals("11") || board.getElement(x_1, y_1).getName().equals("00")){
+        if (board.getElement(x_1, y_1).getName().equals("11") || board.getElement(x_1, y_1).getName().equals("00")) {
             return false;
         }
 
-
-
-
-        if(board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")) {
+        if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")) {
             return true;
         }
 
         return !board.getElement(x_1, y_1).getColor().equals(board.getElement(x_2, y_2).getColor());
     }
+
     //рокировка
     //вроде работает, но нужно тестрировать
-    public boolean castlingCheck(int x_1, int y_1, int x_2, int y_2){
-        if((board.getElement(x_1, y_1).getName().charAt(0) == 'K' && board.getElement(x_2, y_2).getName().charAt(0) == 'R') || (board.getElement(x_1, y_1).getName().charAt(0) == 'R' && board.getElement(x_2, y_2).getName().charAt(0) == 'K') ) {
+    public boolean castlingCheck(int x_1, int y_1, int x_2, int y_2) {
+        if ((board.getElement(x_1, y_1).getName().charAt(0) == 'K' && board.getElement(x_2, y_2).getName().charAt(0) == 'R') || (board.getElement(x_1, y_1).getName().charAt(0) == 'R' && board.getElement(x_2, y_2).getName().charAt(0) == 'K')) {
             if (board.getElement(x_1, y_1).getColor() == board.getElement(x_2, y_2).getColor()) {
                 if (!board.getElement(x_1, y_1).getHasMoved() && !board.getElement(x_2, y_2).getHasMoved()) {
                     if (y_1 < y_2) {
@@ -140,19 +160,20 @@ public class ChessGame {
         }
         return false;
     }
+
     //взятие на проходе
-    public void takingOnThePassCheck(){
+    public void takingOnThePassCheck() {
 
     }
 
     // замена пешки
-    public boolean pawnUpdate(int x_1, int y_1, int x_2, int y_2){
-        if (!check(x_1, y_1, x_2, y_2)){
+    public boolean pawnUpdate(int x_1, int y_1, int x_2, int y_2) {
+        if (!check(x_1, y_1, x_2, y_2)) {
             return false;
         }
 
         //white pawn
-        if((board.getElement(x_1, y_1).getName().equals("PW") && x_1 == 6 && x_2 == 7 && (y_1 == y_2 || y_1 - y_2 == 1 || y_1 - y_2 == -1)) || (board.getElement(x_1, y_1).getName().equals("PB") && x_1 == 1 && x_2 == 0 && (y_1 == y_2 || y_1 - y_2 == 1 || y_1 - y_2 == -1))) {
+        if ((board.getElement(x_1, y_1).getName().equals("PW") && x_1 == 6 && x_2 == 7 && (y_1 == y_2 || y_1 - y_2 == 1 || y_1 - y_2 == -1)) || (board.getElement(x_1, y_1).getName().equals("PB") && x_1 == 1 && x_2 == 0 && (y_1 == y_2 || y_1 - y_2 == 1 || y_1 - y_2 == -1))) {
             boolean localColor = board.getElement(x_1, y_1).getColor();
             while (true) {
                 System.out.println("Select the shape number:");
@@ -163,7 +184,7 @@ public class ChessGame {
                 Scanner sc = new Scanner(System.in);
                 int number = sc.nextInt();
                 initNullCell(x_1, y_1);
-                if (number == 1){
+                if (number == 1) {
                     if (!localColor) {
                         QueenFigure newQueen = new QueenFigure(x_2, y_2, localColor, "QW");
                         board.setElement(x_2, y_2, newQueen);
@@ -172,7 +193,7 @@ public class ChessGame {
                         board.setElement(x_2, y_2, newQueen);
                     }
                     return true;
-                } else if (number == 2){
+                } else if (number == 2) {
                     if (!localColor) {
                         HorseFigure newHorse = new HorseFigure(x_2, y_2, localColor, "HW");
                         board.setElement(x_2, y_2, newHorse);
@@ -181,17 +202,17 @@ public class ChessGame {
                         board.setElement(x_2, y_2, newHorse);
                     }
                     return true;
-                } else if (number == 3){
-                    if(!localColor) {
+                } else if (number == 3) {
+                    if (!localColor) {
                         RookFigure newRook = new RookFigure(x_2, y_2, localColor, "RW");
                         board.setElement(x_2, y_2, newRook);
                     }
-                    if(localColor) {
+                    if (localColor) {
                         RookFigure newRook = new RookFigure(x_2, y_2, localColor, "RB");
                         board.setElement(x_2, y_2, newRook);
                     }
                     return true;
-                } else if (number == 4){
+                } else if (number == 4) {
                     if (!localColor) {
                         BishopFigure newBishop = new BishopFigure(x_2, y_2, localColor, "BW");
                         board.setElement(x_2, y_2, newBishop);
@@ -208,6 +229,58 @@ public class ChessGame {
         }
 
         return false;
+    }
+
+    public boolean checkKing(boolean color, Board board) {
+
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                // если фигура противоположного цвета и не пустая клетка
+                if (board.getElement(x, y).getColor().equals(!color) && !board.getElement(x, y).getName().equals("11") && !board.getElement(x, y).getName().equals("00")) {
+                    if (!color) {
+                        if (board.getElement(x, y).reChecking(x, y, whiteKingX, whiteKingY, board)) {
+                            System.out.println("Check for white");
+                            return true; // mat white
+                        }
+                    } else {
+                        if (board.getElement(x, y).reChecking(x, y, blackKingX, blackKingY, board)) {
+                            System.out.println("Check for black");
+                            return true; // mat black
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean checkMate(boolean color) {
+        //поставили шах белым, ход белого, проверяем все ходы, если ход возможен и шаха не будет, то возвращаем фолс
+
+        Board newBoard = new Board();
+        newBoard = board.copy();
+        Figureable blackCell = new BlackCell();
+        for (int x_1 = 0; x_1 < 8; x_1++) {
+            for (int y_1 = 0; y_1 < 8; y_1++) {
+                if (board.getElement(x_1, y_1).getColor().equals(color) && !board.getElement(x_1, y_1).getName().equals("11") && !board.getElement(x_1, y_1).getName().equals("00")) {
+                    for (int x_2 = 0; x_2 < 8; x_2++) {
+                        for (int y_2 = 0; y_2 < 8; y_2++) {
+                            if (board.getElement(x_1, y_1).reChecking(x_1, y_1, x_2, y_2, board) && check(x_1, y_1, x_2, y_2)) {
+                                newBoard = board.copy();
+                                newBoard.setElement(x_2, y_2, board.getElement(x_1, x_2));
+                                newBoard.setElement(x_1, y_1, blackCell);
+                                if (!checkKing(color, newBoard)) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        return true;
     }
 
     public Board getBoard() {

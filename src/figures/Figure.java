@@ -6,7 +6,7 @@ public class Figure {
     private int y;
     private String name;
 
-    public Figure(){
+    public Figure() {
         color = false;
         x = 0;
         y = 0;

@@ -4,16 +4,16 @@ import figures.*;
 
 public class Board {
     //Object[][] body;
-    private Figureable[][] body;
+    private final Figureable[][] body;
 
-    public Board(){
+    public Board() {
         this.body = new Figureable[ChessGame.MAX_SIZE][ChessGame.MAX_SIZE];
         fillBoard();
         createFigures();
         printBoard();
     }
 
-    public void createFigures(){
+    public void createFigures() {
         // x - строка
         // У - столбик
 
@@ -110,10 +110,10 @@ public class Board {
         }
     }
 
-    public void printBoard(){
+    public void printBoard() {
         StringBuilder str = new StringBuilder();
         str.append(" ");
-        for (int i = 0; i < ChessGame.MAX_SIZE; i++){
+        for (int i = 0; i < ChessGame.MAX_SIZE; i++) {
             str.append("   ");
             str.append(i);
         }
@@ -139,12 +139,23 @@ public class Board {
         return body;
     }
 
-    public Figureable getElement(int x, int y){
+    public Figureable getElement(int x, int y) {
         return body[x][y];
     }
 
-    public void setElement(int x, int y, Figureable obj){
+    public void setElement(int x, int y, Figureable obj) {
         body[x][y] = obj;
+    }
+
+    public Board copy() {
+        Board newBoard = new Board();
+        for (int i = 0; i < ChessGame.MAX_SIZE; ++i) {
+            for (int j = 0; j < ChessGame.MAX_SIZE; ++j) {
+                newBoard.body[i][j] = this.body[i][j];
+            }
+        }
+
+        return newBoard;
     }
 }
 
