@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class ChessGame {
     public static final int MAX_SIZE = 8;
-
     private final Board board;
     private boolean player;
 
@@ -68,7 +67,20 @@ public class ChessGame {
             board.getElement(x_2, y_2).setHasMoved();
             Figureable Rook = board.getElement(x_2, y_2);
             board.setElement(x_2, y_2, board.getElement(x_1, y_1));
+            board.getElement(x_2, y_2).setX(x_2);
+            board.getElement(x_2, y_2).setY(y_2);
+
+            if (board.getElement(x_2, y_2).getName().equals("KW")) {
+                whiteKingX = x_2;
+                whiteKingY = y_2;
+            }
+            if (board.getElement(x_2, y_2).getName().equals("KB")) {
+                blackKingX = x_2;
+                blackKingY = y_2;
+            }
             board.setElement(x_1, y_1, Rook);
+            board.getElement(x_1, y_1).setX(x_1);
+            board.getElement(x_1, y_1).setY(y_1);
             board.printBoard();
             checkKing(true, this.board);
             checkKing(false, this.board);
@@ -76,9 +88,14 @@ public class ChessGame {
 
             return true;
         }
-        //обычный ход
-        if(pawnUpdate(x_1, y_1, x_2, y_2)){
+
+        // замена пешки
+        if (pawnUpdate(x_1, y_1, x_2, y_2)) {
+            board.getElement(x_2, y_2).setX(x_2);
+            board.getElement(x_2, y_2).setY(y_2);
             board.printBoard();
+            checkKing(true, this.board);
+            checkKing(false, this.board);
             return true;
         }
 
@@ -88,6 +105,19 @@ public class ChessGame {
                 board.setElement(x_2, y_2, board.getElement(x_1, y_1));
                 initNullCell(x_1, y_1);
                 board.printBoard();
+                if (board.getElement(x_2, y_2).getName().equals("KW")) {
+                    whiteKingX = x_2;
+                    whiteKingY = y_2;
+                }
+                if (board.getElement(x_2, y_2).getName().equals("KB")) {
+                    blackKingX = x_2;
+                    blackKingY = y_2;
+                }
+                board.getElement(x_2, y_2).setX(x_2);
+                board.getElement(x_2, y_2).setY(y_2);
+
+                checkKing(true, this.board);
+                checkKing(false, this.board);
                 return true;
             } else {
                 System.out.println("Error\n");
@@ -96,11 +126,7 @@ public class ChessGame {
         return false;
     }
 
-    public void whichFigure(){
-        //Figureable fig = new PawnFigure();
-    }
-
-    public void initNullCell(int x_1, int y_1){
+    public void initNullCell(int x_1, int y_1) {
         WhiteCell whiteCell = new WhiteCell();
         BlackCell blackCell = new BlackCell();
 
