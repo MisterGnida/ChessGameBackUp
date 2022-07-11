@@ -10,7 +10,7 @@ public class Board {
         this.body = new Figureable[ChessGame.MAX_SIZE][ChessGame.MAX_SIZE];
         fillBoard();
         createFigures();
-        printBoard();
+        //printBoard();
     }
 
     public void createFigures() {
