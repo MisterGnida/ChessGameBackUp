@@ -219,52 +219,6 @@ public class ChessGame {
         if ((board.getElement(x_1, y_1).getName().charAt(0) == 'K' && board.getElement(x_2, y_2).getName().charAt(0) == 'R') || (board.getElement(x_1, y_1).getName().charAt(0) == 'R' && board.getElement(x_2, y_2).getName().charAt(0) == 'K')) {
             if (board.getElement(x_1, y_1).getColor() == board.getElement(x_2, y_2).getColor()) {
                 if (!board.getElement(x_1, y_1).getHasMoved() && !board.getElement(x_2, y_2).getHasMoved()) {
-                    /*int y;
-                    int lastY;
-                    if (y_1 < y_2){
-                        y = y_1;
-                        lastY = y_2;
-                    } else{
-                        y = y_2;
-                        lastY = y_1;
-                    }
-
-                    for (y = y_1 + 1; y < lastY; y++) {
-                            if (checkForEmptyCell(x_1, y)) {
-                                return false;
-                            }
-                        }
-
-                    if (board.getElement(x_1, y_1).getName().charAt(0) == 'K') {
-                        board.getElement(x_1, y_1).setHasMoved();
-                        board.getElement(x_2, y_2).setHasMoved();
-                        Figureable Rook = board.getElement(x_2, y_2);
-                        board.setElement(x_2, y_2, board.getElement(x_1, y_1));
-                        board.setElement(x_1, y_1, Rook);
-                        if (board.getElement(x_2, y_2).getName().equals("KW")) {
-                            whiteKingX = x_2;
-                            whiteKingY = y_2;
-                        }
-                        if (board.getElement(x_2, y_2).getName().equals("KB")) {
-                            blackKingX = x_2;
-                            blackKingY = y_2;
-                        }
-                    }
-                    if (board.getElement(x_2, y_2).getName().charAt(0) == 'K') {
-                        board.getElement(x_1, y_1).setHasMoved();
-                        board.getElement(x_2, y_2).setHasMoved();
-                        Figureable Rook = board.getElement(x_1, y_1);
-                        board.setElement(x_1, y_1, board.getElement(x_2, y_2));
-                        board.setElement(x_2, y_2, Rook);
-                        if (board.getElement(x_1, y_1).getName().equals("KW")) {
-                            whiteKingX = x_1;
-                            whiteKingY = y_1;
-                        }
-                        if (board.getElement(x_1, y_1).getName().equals("KB")) {
-                            blackKingX = x_1;
-                            blackKingY = y_1;
-                        }*/
-
                     int kingX;
                     int kingY;
                     int rookX;
