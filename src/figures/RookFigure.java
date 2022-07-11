@@ -47,6 +47,11 @@ public class RookFigure implements Figureable {
         return rook.getY();
     }
 
+    @Override
+    public boolean isDoubleStep() {
+        return false;
+    }
+
     public Boolean getColor() {
         return rook.getColor();
     }

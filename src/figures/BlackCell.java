@@ -50,4 +50,9 @@ public class BlackCell implements Figureable {
     public int getY() {
         return 0;
     }
+
+    @Override
+    public boolean isDoubleStep() {
+        return false;
+    }
 }

@@ -45,6 +45,11 @@ public class HorseFigure implements Figureable {
         return horse.getY();
     }
 
+    @Override
+    public boolean isDoubleStep() {
+        return false;
+    }
+
     public Boolean getColor() {
         return horse.getColor();
     }

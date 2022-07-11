@@ -8,6 +8,7 @@ import game.Board;
 public class PawnFigure implements Figureable {
     private final Figure pawn;
     private boolean hasMoved;
+    private boolean doubleStep;
 
     public PawnFigure(int x, int y, boolean color, String name) {
         pawn = new Figure();
@@ -64,11 +65,13 @@ public class PawnFigure implements Figureable {
 
     @Override
     public Boolean reChecking(int x_1, int y_1, int x_2, int y_2, Board board) {
+
         //white double step
         if (x_2 - x_1 == 2 && !(this.getColor()) && y_1 == y_2 && !hasMoved) {
             if (board.getElement(x_2 - 1, y_2).getName().equals("11") || board.getElement(x_2 - 1, y_2).getName().equals("00")) {
                 if ((board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00"))) {
                     setHasMoved();
+                    doubleStep = true;
                     return true;
                 }
             }
@@ -78,6 +81,7 @@ public class PawnFigure implements Figureable {
             if (board.getElement(x_2 + 1, y_2).getName().equals("11") || board.getElement(x_2 + 1, y_2).getName().equals("00")) {
                 if ((board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00"))) {
                     setHasMoved();
+                    doubleStep = true;
                     return true;
                 }
             }
@@ -114,4 +118,7 @@ public class PawnFigure implements Figureable {
         return false;
     }
 
+    public boolean isDoubleStep() {
+        return doubleStep;
+    }
 }

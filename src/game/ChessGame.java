@@ -41,6 +41,9 @@ public class ChessGame {
 
     public void startGame() {
         board.printBoard();
+        move(3, 0, 2, 1);*/
+
+        board.printBoard();
 
         while (true) {
             if (!player) {
@@ -70,11 +73,18 @@ public class ChessGame {
             }
 
             matAndCheck();
-            if (matWhite){
+            if (!player && checkBlack) {
+                matBlack = true;
+            }
+            if (player && checkWhite) {
+                matWhite = true;
+            }
+
+            if (matWhite) {
                 System.out.println("Black wins");
                 break;
             }
-            if (matBlack){
+            if (matBlack) {
                 System.out.println("White wins");
                 break;
             }
@@ -103,6 +113,13 @@ public class ChessGame {
             board.getElement(x_1, y_1).setX(x_1);
             board.getElement(x_1, y_1).setY(y_1);
             board.printBoard();
+            return true;
+        }
+
+        if (takingOnThePassCheck(x_1, y_1, x_2, y_2)) {
+            board.setElement(x_2, y_2, board.getElement(x_1, y_1));
+            initNullCell(x_1, y_1);
+            initNullCell(x_1, y_2);
             return true;
         }
 
@@ -140,16 +157,16 @@ public class ChessGame {
         return false;
     }
 
-    public void matAndCheck(){
-        if(checkKing(false, this.board, whiteKingX, whiteKingY)){
+    public void matAndCheck() {
+        if (checkKing(false, this.board, whiteKingX, whiteKingY)) {
             System.out.println("Check for white");
 
         }
-        if(checkKing(true, this.board, blackKingX, blackKingY)){
+        if (checkKing(true, this.board, blackKingX, blackKingY)) {
             System.out.println("Check for black");
         }
 
-        if(checkWhite){
+        if (checkWhite) {
             checkMate(false);
         }
         if (checkBlack) {
@@ -211,7 +228,6 @@ public class ChessGame {
                         }
                         return true;
                     }
-
                 }
             }
         }
@@ -219,8 +235,68 @@ public class ChessGame {
     }
 
     //взятие на проходе
-    public void takingOnThePassCheck() {
+    /*Условия:
+     * 1) Только ответным ходом
+     * 2) Пешка, совершающая взятие, должна находиться на 5-й горизонтали (для нас 4-й) для белых, а на 4-й (для нас 3-й) для черных.
+     * 3) стоит пешка и пешка противка совершает двойной ход. только тогда возможно взятие на проходе. */
+    public boolean takingOnThePassCheck(int x_1, int y_1, int x_2, int y_2) {
+        WhiteCell wc = new WhiteCell();
+        BlackCell bc = new BlackCell();
+        // если атакующая пешка черная
+        if (player) {
+            if (board.getElement(x_1, y_1).getColor() && x_1 == 3) {
+                // если наша черная пешка стоит по 0-й вертикали
+                if (y_1 == 0 && player != board.getElement(x_1, y_1 + 1).getColor() && board.getElement(x_1, y_1 + 1).isDoubleStep()) {
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")) {
+                        return true;
+                    }
+                    // если наша черная пешка стоит по 7-й вертикали
+                } else if (y_1 == 7 && player != board.getElement(x_1, y_1 - 1).getColor() && board.getElement(x_1, y_1 - 1).isDoubleStep()) {
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")) {
+                        return true;
+                    }
+                }
 
+                // общий случай для черной пешки
+                if (player != board.getElement(x_1, y_1 + 1).getColor() && board.getElement(x_1, y_1 + 1).isDoubleStep()) {
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")){
+                        return true;
+                    }
+                }
+                if (player != board.getElement(x_1, y_1 - 1).getColor() && board.getElement(x_1, y_1 - 1).isDoubleStep()) {
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")){
+                        return true;
+                    }
+                }
+            }
+        } else {
+            if (!board.getElement(x_1, y_1).getColor() && x_1 == 4) {
+                // если наша черная пешка стоит по 0-й вертикали
+                if (y_1 == 0 && player != board.getElement(x_1, y_1 + 1).getColor() && board.getElement(x_1, y_1 + 1).isDoubleStep()) {
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")) {
+                        return true;
+                    }
+                    // если наша черная пешка стоит по 7-й вертикали
+                } else if (y_1 == 7 && player != board.getElement(x_1, y_1 - 1).getColor() && board.getElement(x_1, y_1 - 1).isDoubleStep()) {
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")) {
+                        return true;
+                    }
+                }
+
+                // общий случай для черной пешки
+                if (player != board.getElement(x_1, y_1 + 1).getColor() && board.getElement(x_1, y_1 + 1).isDoubleStep()) {
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")){
+                        return true;
+                    }
+                }
+                if (player != board.getElement(x_1, y_1 - 1).getColor() && board.getElement(x_1, y_1 - 1).isDoubleStep()) {
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     // замена пешки
@@ -311,41 +387,30 @@ public class ChessGame {
             }
         }
 
-        if(!color){
-            checkWhite = false;
-        } else{
-            checkBlack = false;
-        }
         return false;
     }
 
     public boolean checkMate(boolean color) {
         //поставили шах белым, ход белого, проверяем все ходы, если ход возможен и шаха не будет, то возвращаем фолс
-
-        Board newBoard = new Board();
-        Figureable blackCell = new BlackCell();
-
         //проверка всех ходов короля
-
-
         //virtualStep(color, whiteKingX, whiteKingY, 3, 6);
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
-                if(!color) {
-                    if (!virtualStep(color, whiteKingX, whiteKingY, whiteKingX + x, whiteKingY + y)) {
-                        return false;
+                if ((whiteKingY + y < 8 && whiteKingY + y > -1) && (whiteKingX + x > -1 & whiteKingY + x < 8)) {
+                    if (!color && x != -1 && y != -1) {
+                        if (!virtualStep(color, whiteKingX, whiteKingY, whiteKingX + x, whiteKingY + y)) {
+                            return false;
+                        }
                     }
-                }
-                if(color){
-                    if (!virtualStep(color, blackKingX, blackKingY, blackKingX + x, blackKingY + y)) {
-                        return false;
+                    if (color && x != -1 && y != -1) {
+                        if (!virtualStep(color, blackKingX, blackKingY, blackKingX + x, blackKingY + y)) {
+                            return false;
+                        }
                     }
                 }
 
             }
         }
-
-
 
         //проверка всех возможных ходов
         for (int x_1 = 0; x_1 < 8; x_1++) {
@@ -353,7 +418,7 @@ public class ChessGame {
                 if (board.getElement(x_1, y_1).getColor().equals(color) && !board.getElement(x_1, y_1).getName().equals("11") && !board.getElement(x_1, y_1).getName().equals("00")) {
                     for (int x_2 = 0; x_2 < 8; x_2++) {
                         for (int y_2 = 0; y_2 < 8; y_2++) {
-                            if(x_1 == 6 && y_1 == 4 && x_2 == 4 && y_2 == 4){
+                            if (x_1 == 6 && y_1 == 4 && x_2 == 4 && y_2 == 4) {
                                 System.out.println();
                             }
                             if (!virtualStep(color, x_1, y_1, x_2, y_2)) {
@@ -363,9 +428,8 @@ public class ChessGame {
                     }
                 }
             }
-
         }
-        if(!color){
+        if (!color) {
             matWhite = true;
             System.out.println("Mat for white");
         } else {
@@ -376,15 +440,15 @@ public class ChessGame {
     }
 
     public boolean virtualStep(boolean color, int x_1, int y_1, int x_2, int y_2) {
-        Board newBoard = new Board();
+        Board newBoard;
         Figureable blackCell = new BlackCell();
 
         if (board.getElement(x_1, y_1).reChecking(x_1, y_1, x_2, y_2, board) && check(x_1, y_1, x_2, y_2)) {
             newBoard = board.copy();
             newBoard.setElement(x_2, y_2, board.getElement(x_1, y_1));
             newBoard.setElement(x_1, y_1, blackCell);
-            if(!color) {
-                if(whiteKingX == x_1 && whiteKingY == y_1) {
+            if (!color) {
+                if (whiteKingX == x_1 && whiteKingY == y_1) {
                     if (!checkKing(color, newBoard, x_2, y_2)) {
                         return false;
                     }
@@ -394,8 +458,8 @@ public class ChessGame {
                     }
                 }
             }
-            if(color) {
-                if(blackKingX == x_1 && blackKingY == y_1) {
+            if (color) {
+                if (blackKingX == x_1 && blackKingY == y_1) {
                     if (!checkKing(color, newBoard, x_2, y_2)) {
                         return false;
                     }

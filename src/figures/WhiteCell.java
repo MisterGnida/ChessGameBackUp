@@ -43,6 +43,11 @@ public class WhiteCell implements Figureable {
     }
 
     @Override
+    public boolean isDoubleStep() {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return name;
     }

@@ -23,4 +23,6 @@ public interface Figureable {
 
     int getY();
 
+    boolean isDoubleStep();
+
 }

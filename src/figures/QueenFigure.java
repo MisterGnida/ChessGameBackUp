@@ -44,6 +44,11 @@ public class QueenFigure implements Figureable {
         return queen.getY();
     }
 
+    @Override
+    public boolean isDoubleStep() {
+        return false;
+    }
+
     public Boolean getColor() {
         return queen.getColor();
     }

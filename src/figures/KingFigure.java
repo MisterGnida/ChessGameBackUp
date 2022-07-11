@@ -47,6 +47,11 @@ public class KingFigure implements Figureable {
         return king.getY();
     }
 
+    @Override
+    public boolean isDoubleStep() {
+        return false;
+    }
+
     public Boolean getColor() {
         return king.getColor();
     }
