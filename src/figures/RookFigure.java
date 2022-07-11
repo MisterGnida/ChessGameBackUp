@@ -74,7 +74,6 @@ public class RookFigure implements Figureable {
                     return false;
                 }
             }
-            hasMoved = true;
             return true;
         }
 
@@ -85,7 +84,6 @@ public class RookFigure implements Figureable {
                     return false;
                 }
             }
-            hasMoved = true;
             return true;
         }
 
@@ -96,7 +94,6 @@ public class RookFigure implements Figureable {
                     return false;
                 }
             }
-            hasMoved = true;
             return true;
         }
 
@@ -107,7 +104,6 @@ public class RookFigure implements Figureable {
                     return false;
                 }
             }
-            hasMoved = true;
             return true;
         }
 

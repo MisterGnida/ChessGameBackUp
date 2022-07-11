@@ -107,24 +107,6 @@ public class ChessGame {
     public boolean move(int x_1, int y_1, int x_2, int y_2) {
         //рокировка
         if (castlingCheck(x_1, y_1, x_2, y_2)) {
-            board.getElement(x_1, y_1).setHasMoved();
-            board.getElement(x_2, y_2).setHasMoved();
-            Figureable Rook = board.getElement(x_2, y_2);
-            board.setElement(x_2, y_2, board.getElement(x_1, y_1));
-            board.getElement(x_2, y_2).setX(x_2);
-            board.getElement(x_2, y_2).setY(y_2);
-
-            if (board.getElement(x_2, y_2).getName().equals("KW")) {
-                whiteKingX = x_2;
-                whiteKingY = y_2;
-            }
-            if (board.getElement(x_2, y_2).getName().equals("KB")) {
-                blackKingX = x_2;
-                blackKingY = y_2;
-            }
-            board.setElement(x_1, y_1, Rook);
-            board.getElement(x_1, y_1).setX(x_1);
-            board.getElement(x_1, y_1).setY(y_1);
             board.printBoard();
             return true;
         }
@@ -162,6 +144,7 @@ public class ChessGame {
                 board.getElement(x_2, y_2).setX(x_2);
                 board.getElement(x_2, y_2).setY(y_2);
 
+                board.getElement(x_2, y_2).setHasMoved();
                 return true;
             } else {
                 System.out.println("Error\n");
@@ -222,23 +205,68 @@ public class ChessGame {
     //рокировка
     //вроде работает, но нужно тестрировать
     public boolean castlingCheck(int x_1, int y_1, int x_2, int y_2) {
-        if ((board.getElement(x_1, y_1).getName().charAt(0) == 'K' && board.getElement(x_2, y_2).getName().charAt(0) == 'R') || (board.getElement(x_1, y_1).getName().charAt(0) == 'R' && board.getElement(x_2, y_2).getName().charAt(0) == 'K')) {
+        if(!board.getElement(x_1, y_1).getColor()){
+            if(checkWhite){
+                return false;
+            }
+        }
+        if(board.getElement(x_1, y_1).getColor()){
+            if(checkBlack){
+                return false;
+            }
+        }
+
+        if ((board.getElement(x_1, y_1).getName().charAt(0) == 'K' && board.getElement(x_2, y_2).getName().charAt(0) == 'R')
+                || (board.getElement(x_1, y_1).getName().charAt(0) == 'R' && board.getElement(x_2, y_2).getName().charAt(0) == 'K')) {
             if (board.getElement(x_1, y_1).getColor() == board.getElement(x_2, y_2).getColor()) {
                 if (!board.getElement(x_1, y_1).getHasMoved() && !board.getElement(x_2, y_2).getHasMoved()) {
-                    if (y_1 < y_2) {
-                        for (int y = y_1 + 1; y < y_2; y++) {
-                            if (!board.getElement(x_1, y).getName().equals("11") && !board.getElement(x_1, y).getName().equals("00")) {
-                                return false;
-                            }
-                        }
-                        return true;
+                    int y;
+                    int lastY;
+                    if (y_1 < y_2){
+                        y = y_1;
+                        lastY = y_2;
+                    } else{
+                        y = y_2;
+                        lastY = y_1;
                     }
-                    if (y_1 > y_2) {
-                        for (int y = y_2 + 1; y < y_1; y++) {
-                            if (!board.getElement(x_1, y).getName().equals("11") && !board.getElement(x_1, y).getName().equals("00")) {
+
+                    for (y = y_1 + 1; y < lastY; y++) {
+                            if (checkForEmptyCell(x_1, y)) {
                                 return false;
                             }
                         }
+
+                    if (board.getElement(x_1, y_1).getName().charAt(0) == 'K') {
+                        board.getElement(x_1, y_1).setHasMoved();
+                        board.getElement(x_2, y_2).setHasMoved();
+                        Figureable Rook = board.getElement(x_2, y_2);
+                        board.setElement(x_2, y_2, board.getElement(x_1, y_1));
+                        board.setElement(x_1, y_1, Rook);
+                        if (board.getElement(x_2, y_2).getName().equals("KW")) {
+                            whiteKingX = x_2;
+                            whiteKingY = y_2;
+                        }
+                        if (board.getElement(x_2, y_2).getName().equals("KB")) {
+                            blackKingX = x_2;
+                            blackKingY = y_2;
+                        }
+                    }
+                    if (board.getElement(x_2, y_2).getName().charAt(0) == 'K') {
+                        board.getElement(x_1, y_1).setHasMoved();
+                        board.getElement(x_2, y_2).setHasMoved();
+                        Figureable Rook = board.getElement(x_1, y_1);
+                        board.setElement(x_1, y_1, board.getElement(x_2, y_2));
+                        board.setElement(x_2, y_2, Rook);
+                        if (board.getElement(x_1, y_1).getName().equals("KW")) {
+                            whiteKingX = x_1;
+                            whiteKingY = y_1;
+                        }
+                        if (board.getElement(x_1, y_1).getName().equals("KB")) {
+                            blackKingX = x_1;
+                            blackKingY = y_1;
+                        }
+
+
                         return true;
                     }
                 }
@@ -272,12 +300,12 @@ public class ChessGame {
 
                 // общий случай для черной пешки
                 if (player != board.getElement(x_1, y_1 + 1).getColor() && board.getElement(x_1, y_1 + 1).isDoubleStep()) {
-                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")){
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")) {
                         return true;
                     }
                 }
                 if (player != board.getElement(x_1, y_1 - 1).getColor() && board.getElement(x_1, y_1 - 1).isDoubleStep()) {
-                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")){
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")) {
                         return true;
                     }
                 }
@@ -298,12 +326,12 @@ public class ChessGame {
 
                 // общий случай для черной пешки
                 if (player != board.getElement(x_1, y_1 + 1).getColor() && board.getElement(x_1, y_1 + 1).isDoubleStep()) {
-                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")){
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")) {
                         return true;
                     }
                 }
                 if (player != board.getElement(x_1, y_1 - 1).getColor() && board.getElement(x_1, y_1 - 1).isDoubleStep()) {
-                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")){
+                    if (board.getElement(x_2, y_2).getName().equals("11") || board.getElement(x_2, y_2).getName().equals("00")) {
                         return true;
                     }
                 }
@@ -486,5 +514,9 @@ public class ChessGame {
 
     public Board getBoard() {
         return board;
+    }
+
+    public boolean checkForEmptyCell(int x, int y) {
+        return (!board.getElement(x, y).getName().equals("11") && !board.getElement(x, y).getName().equals("00"));
     }
 }
