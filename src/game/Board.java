@@ -21,7 +21,7 @@ public class Board {
         QueenFigure queenWhite = new QueenFigure(0, 3, false, "QW");
         body[0][3] = queenWhite;
         QueenFigure queenBlack = new QueenFigure(7, 3, true, "QB");
-        body[7][3] = queenBlack;
+        //body[7][3] = queenBlack;
 
         // КОРОЛИ
         KingFigure kingWhite = new KingFigure(0, 4, false, "KW");
@@ -35,9 +35,9 @@ public class Board {
         HorseFigure horseWhite_2 = new HorseFigure(0, 6, false, "HW");
         body[0][6] = horseWhite_2;
         HorseFigure horseBlack_1 = new HorseFigure(7, 1, true, "HB");
-        body[7][1] = horseBlack_1;
+        //body[7][1] = horseBlack_1;
         HorseFigure horseBlack_2 = new HorseFigure(7, 6, true, "HB");
-        body[7][6] = horseBlack_2;
+        //body[7][6] = horseBlack_2;
 
         // ЛАДЬИ
         RookFigure rookWhite_1 = new RookFigure(0, 0, false, "RW");
@@ -55,9 +55,9 @@ public class Board {
         BishopFigure bishopWhite_2 = new BishopFigure(0, 5, false, "BW");
         body[0][5] = bishopWhite_2;
         BishopFigure bishopBlack_1 = new BishopFigure(7, 2, true, "BB");
-        body[7][2] = bishopBlack_1;
+        //body[7][2] = bishopBlack_1;
         BishopFigure bishopBlack_2 = new BishopFigure(7, 5, true, "BB");
-        body[7][5] = bishopBlack_2;
+        //body[7][5] = bishopBlack_2;
 
         // ПЕШКИ
         PawnFigure pawnWhite_1 = new PawnFigure(1, 0, false, "PW");
