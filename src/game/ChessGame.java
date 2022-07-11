@@ -40,6 +40,16 @@ public class ChessGame {
     }
 
     public void startGame() {
+/*        move(1, 0, 2, 0);
+        board.printBoard();
+        move(6, 0, 4, 0);
+        board.printBoard();
+        move(1, 2, 2, 2);
+        board.printBoard();
+        move(4, 0, 3, 0);
+        board.printBoard();
+        move(1, 1, 3, 1);
+
         board.printBoard();
         move(3, 0, 2, 1);*/
 
@@ -88,6 +98,9 @@ public class ChessGame {
                 System.out.println("White wins");
                 break;
             }
+
+            checkWhite = false;
+            checkBlack = false;
         }
     }
 
@@ -372,13 +385,11 @@ public class ChessGame {
                 if (board.getElement(x, y).getColor().equals(!color) && !board.getElement(x, y).getName().equals("11") && !board.getElement(x, y).getName().equals("00")) {
                     if (!color) {
                         if (board.getElement(x, y).reChecking(x, y, kX, kY, board)) {
-
                             checkWhite = true;
                             return true; // mat white
                         }
                     } else {
                         if (board.getElement(x, y).reChecking(x, y, kX, kY, board)) {
-
                             checkBlack = true;
                             return true; // mat black
                         }
@@ -408,7 +419,6 @@ public class ChessGame {
                         }
                     }
                 }
-
             }
         }
 
